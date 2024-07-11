@@ -7,7 +7,7 @@ provides utilities to work. Check the description for more details.
 
 Author  : Debmalya Pramanik
 Contact : dpramanik.official@gmail.com
-Version : v1.0.0
+Version : v1.0.1
 
 Copywright © [2024] Debmalya Pramanik
 ********************************************************************/
@@ -47,9 +47,9 @@ BEGIN
 END;
 GO
 
-CREATE FUNCTION [dbo].[getMonthName] (@date DATE) RETURNS VARCHAR(6) AS
+CREATE FUNCTION [dbo].[getMonthName] (@date DATE, @addYear BIT = 1) RETURNS VARCHAR(11) AS
 BEGIN
-    DECLARE @monthName VARCHAR(6);
+    DECLARE @monthName VARCHAR(11);
     DECLARE @_tempMonthValue INTEGER;
 
     IF @date IS NULL
@@ -73,6 +73,9 @@ BEGIN
             WHEN @_tempMonthValue = 12 THEN '12-DEC'
         END;
     END;
+
+    -- ..versionadded:: v1.0.1 - allow to add year in function, optional, default true
+    IF @addYear = 1 SET @monthName = CONCAT(@monthName, '/', YEAR(@date));
 
     RETURN @monthName
 END;
