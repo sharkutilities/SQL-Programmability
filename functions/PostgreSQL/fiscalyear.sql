@@ -14,7 +14,7 @@ CREATE OR REPLACE FUNCTION public.fiscalyear(
   , p_char_prefix VARCHAR(16) DEFAULT 'F.Y. '
   , p_retvalue_sep VARCHAR(4) DEFAULT '-'
 ) RETURNS VARCHAR(48)
-LANGUAGE plpgsql IMMUTABLE AS
+LANGUAGE plpgsql AS
 $$
 
 DECLARE
