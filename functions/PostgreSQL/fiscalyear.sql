@@ -27,11 +27,11 @@ BEGIN
 
   IF EXTRACT(MONTH FROM p_input_date) >= p_start_month THEN
     fy_st_year := EXTRACT(YEAR FROM p_input_date);
-    fy_ed_year := fy_st_year + 1;
   ELSE
     fy_st_year := EXTRACT(YEAR FROM p_input_date) - 1;
-    fy_ed_year := fy_st_year + 1;
   END IF;
+
+  fy_ed_year := fy_st_year + 1;
 
   RETURN p_char_prefix || fy_st_year || p_retvalue_sep || fy_ed_year;
 END;
