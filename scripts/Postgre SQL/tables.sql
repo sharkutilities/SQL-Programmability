@@ -34,10 +34,10 @@ Query for HyperTable + PG Table Size (Combined PostgreSQL DB)
 SELECT
     *
     , pg_size_pretty(
-    pg_total_relation_size(schemaname || '.' || tablename)
-    + COALESCE(hypertable_size(
-        schemaname || '.' || tablename
-    ), 0)
+	    pg_total_relation_size(schemaname || '.' || tablename)
+	    + COALESCE(hypertable_size(
+	        schemaname || '.' || tablename
+	    ), 0)
     ) AS tablesize
 FROM pg_tables WHERE schemaname NOT IN (
     'pg_catalog', 'information_schema', 'cron', '_timescaledb_cache',
