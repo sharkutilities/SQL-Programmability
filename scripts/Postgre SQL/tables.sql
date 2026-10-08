@@ -11,7 +11,9 @@ SELECT
         schemaname || '.' || tablename
     )) AS tablesize
 FROM pg_tables WHERE schemaname NOT IN (
-    'pg_catalog', 'information_schema'
+    'pg_catalog', 'information_schema', 'cron', '_timescaledb_cache',
+	'_timescaledb_catalog', '_timescaledb_config', '_timescaledb_functions',
+	'_timescaledb_internal', 'timescaledb_experimental', 'timescaledb_information'
 )
 ORDER BY pg_total_relation_size(schemaname || '.' || tablename) DESC
 
