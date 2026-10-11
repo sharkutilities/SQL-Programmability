@@ -32,7 +32,7 @@ Query for HyperTable + PG Table Size (Combined PostgreSQL DB)
 ********************************************************************/
 
 SELECT
-    *
+    tbl.*
     , pg_size_pretty(
         pg_total_relation_size(schemaname || '.' || tablename)
         + COALESCE(hypertable_size(
@@ -43,11 +43,20 @@ SELECT
         WHEN hypertable_size(schemaname || '.' || tablename)
             IS NOT DISTINCT FROM NULL THEN 'table'
         ELSE 'hypertable' END AS tabletype
-FROM pg_tables WHERE schemaname NOT IN (
+    , hytbl.compression_enabled
+FROM pg_tables tbl
+
+LEFT JOIN timescaledb_information.hypertables hytbl ON
+    tbl.schemaname = hytbl.hypertable_schema
+    AND tbl.tablename = hytbl.hypertable_name
+    AND tbl.tableowner = hytbl.owner
+
+WHERE schemaname NOT IN (
     'pg_catalog', 'information_schema', 'cron', '_timescaledb_cache',
     '_timescaledb_catalog', '_timescaledb_config', '_timescaledb_functions',
     '_timescaledb_internal', 'timescaledb_experimental', 'timescaledb_information'
 )
+
 ORDER BY (
     pg_total_relation_size(schemaname || '.' || tablename)
     + COALESCE(hypertable_size(
